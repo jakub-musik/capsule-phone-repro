@@ -24,22 +24,10 @@ rm -rf node_modules
 rm -f yarn.lock
 
 # Clean packages
-clean_package "react-native-app"
+clean_package "rn-app"
 clean_package "expo-app"
 clean_package "shared-ui"
 
 # Clean Yarn cache
 echo "Cleaning Yarn cache..."
 yarn cache clean
-
-# Reinstall dependencies
-echo "Reinstalling dependencies..."
-yarn install
-
-# Install CocoaPods if react-native-app exists
-if [ -d "packages/react-native-app" ]; then
-  echo "Installing CocoaPods..."
-  cd packages/react-native-app/ios && pod install && cd ../../..
-fi
-
-echo "Clean install completed!"

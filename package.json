@@ -5,11 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "start:rn": "yarn workspace @rn-integration-examples/react-native-app start",
-    "android:rn": "yarn workspace @rn-integration-examples/react-native-app android",
-    "ios:rn": "yarn workspace @rn-integration-examples/react-native-app ios",
-    "start:expo": "yarn workspace @rn-integration-examples/expo-app start",
-    "clean-install": "./scripts/clean-install.sh"
+    "start": "yarn workspace @rn-integration-examples/rn-app start"
   },
   "packageManager": "yarn@1.22.22"
 }
