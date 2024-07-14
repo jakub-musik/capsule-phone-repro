@@ -1,76 +1,174 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import { CapsuleMobile, Environment } from "@usecapsule/react-native-wallet";
 import InAppBrowser from "react-native-inappbrowser-reborn";
 
-// Step 1: Initialize the Capsule client
+// Initialize the Capsule client
 const capsule = new CapsuleMobile(Environment.BETA, "YOUR_API_KEY");
 
-export const WebviewPasskeysAuth: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [email, setEmail] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
+interface WebviewPasskeysAuthProps {
+  onBack: () => void;
+}
 
-  // Step 2: Check auth state
+const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => {
+  const [authStage, setAuthStage] = useState<"initial" | "verification" | "authenticated">("initial");
+  const [email, setEmail] = useState<string>("");
+  const [verificationCode, setVerificationCode] = useState<string>("");
+  const [messageToSign, setMessageToSign] = useState<string>("");
+  const [signedMessage, setSignedMessage] = useState<string>("");
+  const [error, setError] = useState<string>("");
+
   useEffect(() => {
     const checkAuthState = async () => {
       const isLoggedIn = await capsule.isFullyLoggedIn();
-      setIsAuthenticated(isLoggedIn);
+      if (isLoggedIn) {
+        setAuthStage("authenticated");
+      }
     };
     checkAuthState();
   }, []);
 
-  // Step 3: Initiate authentication
   const handleAuthentication = async () => {
+    setError("");
     try {
       const userExists = await capsule.checkIfUserExists(email);
+      console.log("User exists:", userExists);
       if (userExists) {
-        // Step 5: Authenticate existing user
         const webAuthLoginUrl = await capsule.initiateUserLogin(email, true);
+        console.log("Web auth login URL:", webAuthLoginUrl);
         await InAppBrowser.open(webAuthLoginUrl);
         await capsule.waitForLoginAndSetup();
         InAppBrowser.close();
-        setIsAuthenticated(true);
+        setAuthStage("authenticated");
       } else {
-        // Step 4: Create new user and initiate email verification
         await capsule.createUser(email);
-        // Show UI for entering verification code
+        setAuthStage("verification");
       }
     } catch (error) {
       console.error("Authentication error:", error);
+      setError("Authentication failed. Please try again.");
     }
   };
 
-  // Step 6: Handle verification
   const handleVerification = async () => {
+    setError("");
     try {
       const webAuthCreateUrl = await capsule.verifyEmail(verificationCode);
       await InAppBrowser.open(webAuthCreateUrl);
       await capsule.waitForAccountCreation();
       InAppBrowser.close();
-      setIsAuthenticated(true);
+      setAuthStage("authenticated");
     } catch (error) {
       console.error("Verification error:", error);
+      setError("Verification failed. Please check your code and try again.");
     }
   };
 
-  if (isAuthenticated) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Authenticated! Ready to sign messages.</Text>
-      </View>
-    );
-  }
+  const handleSignMessage = async () => {
+    setError("");
+    try {
+    } catch (error) {
+      console.error("Signing error:", error);
+      setError("Failed to sign message. Please try again.");
+    }
+  };
+
+  const handleBack = async () => {
+    if (authStage === "authenticated") {
+      try {
+        await capsule.logout();
+        setAuthStage("initial");
+        setEmail("");
+        setVerificationCode("");
+        setMessageToSign("");
+        setSignedMessage("");
+      } catch (error) {
+        console.error("Logout error:", error);
+        setError("Failed to logout. Please try again.");
+      }
+    }
+    onBack();
+  };
+
+  const renderContent = () => {
+    switch (authStage) {
+      case "initial":
+        return (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your email"
+              placeholderTextColor="#999"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <TouchableOpacity style={styles.button} onPress={handleAuthentication}>
+              <Text style={styles.buttonText}>Authenticate</Text>
+            </TouchableOpacity>
+          </>
+        );
+      case "verification":
+        return (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter verification code"
+              placeholderTextColor="#999"
+              value={verificationCode}
+              onChangeText={setVerificationCode}
+              keyboardType="number-pad"
+            />
+            <TouchableOpacity style={styles.button} onPress={handleVerification}>
+              <Text style={styles.buttonText}>Verify Code</Text>
+            </TouchableOpacity>
+          </>
+        );
+      case "authenticated":
+        return (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter message to sign"
+              placeholderTextColor="#999"
+              value={messageToSign}
+              onChangeText={setMessageToSign}
+              multiline
+            />
+            <TouchableOpacity style={styles.button} onPress={handleSignMessage}>
+              <Text style={styles.buttonText}>Sign Message</Text>
+            </TouchableOpacity>
+            {signedMessage !== "" && <Text style={styles.signedMessage}>Signed Message: {signedMessage}</Text>}
+          </>
+        );
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Webview Passkeys Authentication</Text>
-      {/* Add input fields for email and verification code */}
-      <TouchableOpacity style={styles.button} onPress={handleAuthentication}>
-        <Text style={styles.buttonText}>Authenticate</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleVerification}>
-        <Text style={styles.buttonText}>Verify Code</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>
+          {authStage === "initial"
+            ? "Webview Passkeys Authentication"
+            : authStage === "verification"
+            ? "Email Verification"
+            : "Sign Message"}
+        </Text>
+        <Text style={styles.description}>
+          {authStage === "initial"
+            ? "Enter your email to authenticate using webview passkeys. If you're a new user, you'll be asked to verify your email."
+            : authStage === "verification"
+            ? "A verification code has been sent to your email. Please enter it below to complete the authentication process."
+            : "Enter a message below to sign it using your authenticated passkey."}
+        </Text>
+      </View>
+      <View style={styles.contentContainer}>
+        {renderContent()}
+        {error !== "" && <Text style={styles.errorText}>{error}</Text>}
+      </View>
+      <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+        <Text style={styles.backButtonText}>Back to Options</Text>
       </TouchableOpacity>
     </View>
   );
@@ -79,28 +177,42 @@ export const WebviewPasskeysAuth: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0c0a09",
+  },
+  headerContainer: {
     alignItems: "center",
+    paddingTop: 16,
+  },
+  contentContainer: {
+    flex: 1,
     justifyContent: "center",
-    padding: 20,
+    alignItems: "center",
+    paddingHorizontal: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
-    marginBottom: 10,
+    marginBottom: 8,
+    textAlign: "center",
   },
   description: {
     fontSize: 16,
-    color: "white",
+    color: "#d3d3d3",
     textAlign: "center",
-    marginBottom: 30,
+  },
+  input: {
+    backgroundColor: "white",
+    width: "100%",
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16,
+    fontSize: 16,
   },
   button: {
-    backgroundColor: "#007bff",
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 15,
+    backgroundColor: "#FE452B",
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16,
     width: "100%",
     alignItems: "center",
   },
@@ -112,5 +224,28 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontSize: 16,
+    textAlign: "center",
+  },
+  errorText: {
+    color: "#FF6B6B",
+    fontSize: 14,
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  backButton: {
+    alignSelf: "center",
+    marginBottom: 16,
+  },
+  backButtonText: {
+    color: "#FE452B",
+    fontSize: 16,
+  },
+  signedMessage: {
+    color: "white",
+    fontSize: 14,
+    marginTop: 16,
+    textAlign: "center",
   },
 });
+
+export default WebviewPasskeysAuth;

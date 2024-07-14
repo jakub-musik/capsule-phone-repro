@@ -25,7 +25,6 @@ rm -f yarn.lock
 
 # Clean packages
 clean_package "rn-app"
-clean_package "expo-app"
 clean_package "shared-ui"
 
 # Clean Yarn cache

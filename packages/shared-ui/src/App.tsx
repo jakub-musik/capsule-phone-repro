@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-// import { NativePasskeysAuth } from "./components/NativePasskeysAuth";
-// import { WebviewPasskeysAuth } from "./components/WebviewPasskeysAuth";
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
+import NativePasskeysAuth from "./components/NativePasskeysAuth";
+import WebviewPasskeysAuth from "./components/WebviewPasskeysAuth";
 
 interface AppProps {
   isExpo: boolean;
@@ -10,64 +10,88 @@ interface AppProps {
 const App: React.FC<AppProps> = ({ isExpo }) => {
   const [authMethod, setAuthMethod] = useState<"native" | "webview" | null>(null);
 
-  // const renderAuthComponent = () => {
-  //   switch (authMethod) {
-  //     case "native":
-  //       return <NativePasskeysAuth />;
-  //     case "webview":
-  //       return <WebviewPasskeysAuth />;
-  //     default:
-  //       return null;
-  //   }
-  // };
+  const handleBack = () => {
+    setAuthMethod(null);
+  };
+
+  const renderAuthOptions = () => (
+    <View style={styles.content}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>{isExpo ? "Capsule SDK Expo Example" : "Capsule SDK React Native Example"}</Text>
+        <Text style={styles.description}>
+          This app demonstrates the usage of Capsule's SDK for React Native. Please select an authentication method
+          below.
+        </Text>
+      </View>
+      <View style={styles.authOptionsContainer}>
+        <TouchableOpacity style={styles.button} onPress={() => setAuthMethod("native")}>
+          <Text style={styles.buttonText}>Native Passkeys (Recommended)</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => setAuthMethod("webview")}>
+          <Text style={styles.buttonText}>Webview Passkeys</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  const renderContent = () => {
+    switch (authMethod) {
+      case "native":
+        return <NativePasskeysAuth onBack={handleBack} />;
+      case "webview":
+        return <WebviewPasskeysAuth onBack={handleBack} />;
+      default:
+        return renderAuthOptions();
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{isExpo ? "Capsule SDK Expo Example" : "Capsule SDK React Native Example"}</Text>
-      <Text style={styles.description}>This app demonstrates the usage of Capsule's SDK for React Native.</Text>
-
-      {/* {!authMethod && (
-        <>
-          <TouchableOpacity style={styles.button} onPress={() => setAuthMethod("native")}>
-            <Text style={styles.buttonText}>Native Passkeys (Recommended)</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button} onPress={() => setAuthMethod("webview")}>
-            <Text style={styles.buttonText}>Webview Passkeys</Text>
-          </TouchableOpacity>
-        </>
-      )}
-
-      {renderAuthComponent()} */}
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>{renderContent()}</View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: "#0c0a09",
+  },
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  content: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+  headerContainer: {
     alignItems: "center",
+    paddingTop: 16,
+  },
+  authOptionsContainer: {
+    flex: 1,
     justifyContent: "center",
-    padding: 20,
+    alignItems: "center",
+    paddingHorizontal: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
-    marginBottom: 10,
+    marginBottom: 8,
+    textAlign: "center",
   },
   description: {
     fontSize: 16,
-    color: "white",
+    color: "#d3d3d3",
     textAlign: "center",
-    marginBottom: 30,
   },
   button: {
-    backgroundColor: "#007bff",
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 15,
+    backgroundColor: "#FE452B",
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16,
     width: "100%",
     alignItems: "center",
   },
