@@ -4,12 +4,43 @@ import { CapsuleMobile, Environment } from "@usecapsule/react-native-wallet";
 import InAppBrowser from "react-native-inappbrowser-reborn";
 import { AuthenticatedState, Button, Header, Input } from "./components";
 
+// Capsule React Native SDK integration example for Passkey via Webview authentication and message signing.
+// This tutorial provides a step-by-step guide to implement Capsule's authentication flow.
+// For additional details on the Capsule SDK, refer to: https://docs.usecapsule.com/
+
 interface WebviewPasskeysAuthProps {
   onBack: () => void;
 }
 
-// Step 1: Initialize the Capsule client
-const capsule = new CapsuleMobile(Environment.BETA, "d0b61c2c8865aaa2fb12886651627271");
+// Step 1: Set up your Capsule API key
+// Obtain your API key from https://usecapsule.com/beta
+const CAPSULE_API_KEY = "d0b61c2c8865aaa2fb12886651627271";
+
+// Step 2: Set the Capsule environment
+// Choose between Environment.DEVELOPMENT or Environment.PRODUCTION based on your use case
+const CAPSULE_ENVIRONMENT = Environment.DEVELOPMENT;
+
+// Step 3: (Optional) Customize the Capsule SDK integration
+// These options allow you to tailor the look and feel of the Capsule integration
+// For a full list of constructor options, visit:
+// https://docs.usecapsule.com/integration-guide/customize-capsule#constructor-options
+const constructorOpts = {
+  emailPrimaryColor: "#ff6700",
+  githubUrl: "https://github.com/capsule-org",
+  linkedinUrl: "https://www.linkedin.com/company/usecapsule/",
+  xUrl: "https://x.com/usecapsule",
+  homepageUrl: "https://usecapsule.com/",
+  supportUrl: "https://usecapsule.com/talk-to-us",
+};
+
+// Step 4: Initialize the Capsule client
+// Create a new Capsule instance with your environment, API key, and optional constructor parameters
+const capsuleClient = new CapsuleMobile(
+  Environment.BETA,
+  "d0b61c2c8865aaa2fb12886651627271",
+  undefined,
+  constructorOpts
+);
 
 const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => {
   const [authStage, setAuthStage] = useState<"initial" | "verification" | "authenticated">("initial");
@@ -21,27 +52,33 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletId, setWalletId] = useState<string>("");
   const [recoveryShare, setRecoveryShare] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // Step 5: Check user's login status and initialize capsule for async storage (if needed)
+  // This effect runs on component mount to determine if the user is already logged in
   useEffect(() => {
     const initCapsule = async () => {
+      setIsLoading(true);
       try {
         // Step 2: Initialize Capsule. Only needed for async storage setup.
-        await capsule.init();
+        await capsuleClient.init();
         await checkAuthState();
       } catch (error) {
         console.error("Capsule init error:", error);
         setError("Failed to initialize Capsule. Please try again.");
+      } finally {
+        setIsLoading(false);
       }
     };
     initCapsule();
   }, []);
 
-  // Step 3: Check the authentication state
+  // Step 5.1: Check user's authentication state
   const checkAuthState = async () => {
     try {
-      const isLoggedIn = await capsule.isFullyLoggedIn();
+      const isLoggedIn = await capsuleClient.isFullyLoggedIn();
       if (isLoggedIn) {
-        const wallets = capsule.getWallets();
+        const wallets = capsuleClient.getWallets();
         const firstWallet = Object.values(wallets)[0];
         if (firstWallet) {
           setWalletId(firstWallet.id);
@@ -55,11 +92,12 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
     }
   };
 
-  // Step 4: Handle user authentication
+  // Step 6: Handle user authentication
   const handleAuthentication = async () => {
     setError("");
+    setIsLoading(true);
     try {
-      const userExists = await capsule.checkIfUserExists(email);
+      const userExists = await capsuleClient.checkIfUserExists(email);
       if (userExists) {
         await handleLogin();
       } else {
@@ -68,17 +106,19 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
     } catch (error) {
       console.error("Authentication error:", error);
       setError("Authentication failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Step 5: Handle user login
+  // Step 6.1: Handle user login
   const handleLogin = async () => {
     try {
-      const webAuthLoginUrl = await capsule.initiateUserLogin(email, true);
+      const webAuthLoginUrl = await capsuleClient.initiateUserLogin(email, true);
       await InAppBrowser.open(webAuthLoginUrl);
-      await capsule.waitForLoginAndSetup();
+      await capsuleClient.waitForLoginAndSetup();
       InAppBrowser.close();
-      const wallets = capsule.getWallets();
+      const wallets = capsuleClient.getWallets();
       const firstWallet = Object.values(wallets)[0];
       if (firstWallet) {
         setWalletId(firstWallet.id);
@@ -91,10 +131,10 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
     }
   };
 
-  // Step 6: Handle new user creation
+  // Step 6.2: Handle new user creation
   const handleCreateUser = async () => {
     try {
-      await capsule.createUser(email);
+      await capsuleClient.createUser(email);
       setAuthStage("verification");
     } catch (error) {
       console.error("User creation error:", error);
@@ -102,15 +142,16 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
     }
   };
 
-  // Step 7: Handle email verification
+  // Step 7: Handle email verification and wallet creation
   const handleVerification = async () => {
     setError("");
+    setIsLoading(true);
     try {
-      const webAuthCreateUrl = await capsule.verifyEmail(verificationCode);
+      const webAuthCreateUrl = await capsuleClient.verifyEmail(verificationCode);
       await InAppBrowser.open(webAuthCreateUrl);
-      const recoverySecret = await capsule.waitForPasskeyAndCreateWallet();
+      const recoverySecret = await capsuleClient.waitForPasskeyAndCreateWallet();
       InAppBrowser.close();
-      const wallets = capsule.getWallets();
+      const wallets = capsuleClient.getWallets();
       const firstWallet = Object.values(wallets)[0];
       if (firstWallet) {
         setWalletId(firstWallet.id);
@@ -121,19 +162,23 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
     } catch (error) {
       console.error("Verification error:", error);
       setError("Verification failed. Please check your code and try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // Step 8: Handle message signing
   const handleSignMessage = async () => {
     setError("");
+    setIsLoading(true);
     if (!walletId || !messageToSign.trim()) {
       setError("Please enter a message to sign.");
+      setIsLoading(false);
       return;
     }
     try {
       const base64Message = Buffer.from(messageToSign, "utf-8").toString("base64");
-      const signatureResponse = await capsule.signMessage(walletId, base64Message);
+      const signatureResponse = await capsuleClient.signMessage(walletId, base64Message);
       if ("signature" in signatureResponse) {
         setSignedMessage(`0x${signatureResponse.signature}`);
       } else {
@@ -144,6 +189,8 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
     } catch (error) {
       console.error("Signing error:", error);
       setError("Failed to sign message. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -151,7 +198,7 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
   const handleBack = async () => {
     if (authStage === "authenticated") {
       try {
-        await capsule.logout();
+        await capsuleClient.logout();
         resetState();
       } catch (error) {
         console.error("Logout error:", error);
@@ -198,6 +245,7 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
             setMessageToSign={setMessageToSign}
             handleSignMessage={handleSignMessage}
             signedMessage={signedMessage}
+            isLoading={isLoading}
           />
         );
     }
@@ -206,9 +254,18 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
   const getActionButton = () => {
     switch (authStage) {
       case "initial":
-        return <Button title="Authenticate" onPress={handleAuthentication} disabled={!email.trim()} />;
+        return (
+          <Button title="Authenticate" onPress={handleAuthentication} disabled={!email.trim()} loading={isLoading} />
+        );
       case "verification":
-        return <Button title="Verify Code" onPress={handleVerification} disabled={!verificationCode.trim()} />;
+        return (
+          <Button
+            title="Verify Code"
+            onPress={handleVerification}
+            disabled={!verificationCode.trim()}
+            loading={isLoading}
+          />
+        );
       default:
         return null;
     }

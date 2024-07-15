@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
 import NativePasskeysAuth from "./NativePasskeysAuthExample";
 import WebviewPasskeysAuth from "./WebviewPasskeysAuthExample";
-import PolyfillCrypto from "react-native-webview-crypto";
+import PolyfillCrypto from "react-native-webview-crypto"; //
 
 import Header from "./components/Header";
 import Button from "./components/Button";
@@ -10,6 +10,8 @@ import Button from "./components/Button";
 interface AppProps {
   isExpo: boolean;
 }
+
+//Note that new versions of Capsule now uses PolyfillCrypto. Make sure to add <PolyfillCrypto /> in your App.tsx file.
 
 const App: React.FC<AppProps> = ({ isExpo }) => {
   const [authMethod, setAuthMethod] = useState<"native" | "webview" | null>(null);
