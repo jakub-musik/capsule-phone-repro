@@ -12,6 +12,7 @@ interface AuthenticatedStateProps {
   setMessageToSign: (message: string) => void;
   handleSignMessage: () => void;
   signedMessage: string;
+  isLoading: boolean;
 }
 
 const AuthenticatedState: React.FC<AuthenticatedStateProps> = ({
@@ -22,6 +23,7 @@ const AuthenticatedState: React.FC<AuthenticatedStateProps> = ({
   setMessageToSign,
   handleSignMessage,
   signedMessage,
+  isLoading,
 }) => {
   return (
     <View style={styles.container}>
@@ -29,7 +31,7 @@ const AuthenticatedState: React.FC<AuthenticatedStateProps> = ({
       <CopyableText label="Wallet Address" value={walletAddress} />
       {recoveryShare && <CopyableText label="Recovery Share" value={recoveryShare} />}
       <Input value={messageToSign} onChangeText={setMessageToSign} placeholder="Enter message to sign" multiline />
-      <Button title="Sign Message" onPress={handleSignMessage} disabled={!messageToSign.trim()} />
+      <Button title="Sign Message" onPress={handleSignMessage} disabled={!messageToSign.trim()} loading={isLoading} />
       {signedMessage !== "" && <CopyableText label="Signed Message" value={signedMessage} />}
     </View>
   );
