@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "clean-install": "node scripts/clean-install.sh",
+    "clean-install": "scripts/clean-install.sh",
     "start": "yarn workspace @rn-integration-examples/rn-app start"
   },
   "packageManager": "yarn@1.22.22"

@@ -78,8 +78,13 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
       await InAppBrowser.open(webAuthLoginUrl);
       await capsule.waitForLoginAndSetup();
       InAppBrowser.close();
+      const wallets = capsule.getWallets();
+      const firstWallet = Object.values(wallets)[0];
+      if (firstWallet) {
+        setWalletId(firstWallet.id);
+        setWalletAddress(firstWallet.address ?? "");
+      }
       setAuthStage("authenticated");
-      await updateWalletInfo();
     } catch (error) {
       console.error("Login error:", error);
       setError("Login failed. Please try again.");
@@ -103,27 +108,23 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
     try {
       const webAuthCreateUrl = await capsule.verifyEmail(verificationCode);
       await InAppBrowser.open(webAuthCreateUrl);
-      await capsule.waitForAccountCreation();
+      const recoverySecret = await capsule.waitForPasskeyAndCreateWallet();
       InAppBrowser.close();
+      const wallets = capsule.getWallets();
+      const firstWallet = Object.values(wallets)[0];
+      if (firstWallet) {
+        setWalletId(firstWallet.id);
+        setWalletAddress(firstWallet.address ?? "");
+        setAuthStage("authenticated");
+      }
       setAuthStage("authenticated");
-      await updateWalletInfo();
     } catch (error) {
       console.error("Verification error:", error);
       setError("Verification failed. Please check your code and try again.");
     }
   };
 
-  // Step 8: Update wallet information
-  const updateWalletInfo = async () => {
-    const wallets = capsule.getWallets();
-    const firstWallet = Object.values(wallets)[0];
-    if (firstWallet) {
-      setWalletId(firstWallet.id);
-      setWalletAddress(firstWallet.address ?? "");
-    }
-  };
-
-  // Step 9: Handle message signing
+  // Step 8: Handle message signing
   const handleSignMessage = async () => {
     setError("");
     if (!walletId || !messageToSign.trim()) {
@@ -146,7 +147,7 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
     }
   };
 
-  // Step 10: Handle logout
+  // Step 9: Handle logout
   const handleBack = async () => {
     if (authStage === "authenticated") {
       try {
