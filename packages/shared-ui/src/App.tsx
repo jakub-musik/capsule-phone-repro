@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
-import NativePasskeysAuth from "./components/NativePasskeysAuth";
-import WebviewPasskeysAuth from "./components/WebviewPasskeysAuth";
+import { View, StyleSheet, SafeAreaView } from "react-native";
+import NativePasskeysAuth from "./NativePasskeysAuthExample";
+import WebviewPasskeysAuth from "./WebviewPasskeysAuthExample";
+import PolyfillCrypto from "react-native-webview-crypto";
+
+import Header from "./components/Header";
+import Button from "./components/Button";
 
 interface AppProps {
   isExpo: boolean;
@@ -16,20 +20,13 @@ const App: React.FC<AppProps> = ({ isExpo }) => {
 
   const renderAuthOptions = () => (
     <View style={styles.content}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>{isExpo ? "Capsule SDK Expo Example" : "Capsule SDK React Native Example"}</Text>
-        <Text style={styles.description}>
-          This app demonstrates the usage of Capsule's SDK for React Native. Please select an authentication method
-          below.
-        </Text>
-      </View>
+      <Header
+        title={isExpo ? "Capsule SDK Expo Example" : "Capsule SDK React Native Example"}
+        description="This app demonstrates the usage of Capsule's SDK for React Native. Please select an authentication method below."
+      />
       <View style={styles.authOptionsContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => setAuthMethod("native")}>
-          <Text style={styles.buttonText}>Native Passkeys (Recommended)</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => setAuthMethod("webview")}>
-          <Text style={styles.buttonText}>Webview Passkeys</Text>
-        </TouchableOpacity>
+        <Button title="Native Passkeys (Recommended)" onPress={() => setAuthMethod("native")} />
+        <Button title="Webview Passkeys" onPress={() => setAuthMethod("webview")} />
       </View>
     </View>
   );
@@ -47,6 +44,7 @@ const App: React.FC<AppProps> = ({ isExpo }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <PolyfillCrypto />
       <View style={styles.container}>{renderContent()}</View>
     </SafeAreaView>
   );
@@ -65,40 +63,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
   },
-  headerContainer: {
-    alignItems: "center",
-    paddingTop: 16,
-  },
   authOptionsContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-    marginBottom: 8,
-    textAlign: "center",
-  },
-  description: {
-    fontSize: 16,
-    color: "#d3d3d3",
-    textAlign: "center",
-  },
-  button: {
-    backgroundColor: "#FE452B",
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 16,
-    width: "100%",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
   },
 });
 
