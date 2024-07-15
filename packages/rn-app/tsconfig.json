@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@rn-integration-examples/*": ["../*/src"]
+    }
+  },
+  "include": ["src", "index.js"]
+}
