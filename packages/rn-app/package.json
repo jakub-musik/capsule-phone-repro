@@ -28,7 +28,7 @@
     "react-native-modpow": "^1.1.0",
     "react-native-randombytes": "^3.6.1",
     "react-native-toast-message": "^2.2.0",
-    "react-native-webview": "^13.10.5",
+    "react-native-webview": "13.8.6",
     "react-native-webview-crypto": "^0.0.25",
     "readable-stream": "^4.5.2"
   },

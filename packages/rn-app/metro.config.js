@@ -28,10 +28,6 @@ const config = {
       },
     }),
   },
-  sourceMapOptions: {
-    excludeSource: false, // Include source code in the source map
-    sourceMapEnabled: true, // Enable source map generation
-  },
 };
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);

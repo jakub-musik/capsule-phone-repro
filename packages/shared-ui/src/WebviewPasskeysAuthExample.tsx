@@ -35,14 +35,9 @@ const constructorOpts = {
 
 // Step 4: Initialize the Capsule client
 // Create a new Capsule instance with your environment, API key, and optional constructor parameters
-const capsuleClient = new CapsuleMobile(
-  Environment.BETA,
-  "d0b61c2c8865aaa2fb12886651627271",
-  undefined,
-  constructorOpts
-);
+const capsuleClient = new CapsuleMobile(CAPSULE_ENVIRONMENT, CAPSULE_API_KEY, undefined, constructorOpts);
 
-const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => {
+export const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => {
   const [authStage, setAuthStage] = useState<"initial" | "verification" | "authenticated">("initial");
   const [email, setEmail] = useState<string>("");
   const [verificationCode, setVerificationCode] = useState<string>("");
@@ -60,8 +55,6 @@ const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack }) => 
     const initCapsule = async () => {
       setIsLoading(true);
       try {
-        // Step 2: Initialize Capsule. Only needed for async storage setup.
-        await capsuleClient.init();
         await checkAuthState();
       } catch (error) {
         console.error("Capsule init error:", error);
@@ -340,5 +333,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-export default WebviewPasskeysAuth;

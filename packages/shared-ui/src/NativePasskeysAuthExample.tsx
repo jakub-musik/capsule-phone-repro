@@ -35,14 +35,9 @@ const constructorOpts = {
 
 // Step 4: Initialize the Capsule client
 // Create a new Capsule instance with your environment, API key, and optional constructor parameters
-const capsuleClient = new CapsuleMobile(
-  Environment.BETA,
-  "d0b61c2c8865aaa2fb12886651627271",
-  undefined,
-  constructorOpts
-);
+const capsuleClient = new CapsuleMobile(CAPSULE_ENVIRONMENT, CAPSULE_API_KEY, undefined, constructorOpts);
 
-const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }) => {
+export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }) => {
   const [authStage, setAuthStage] = useState<"initial" | "verification" | "authenticated">("initial");
   const [email, setEmail] = useState<string>("");
   const [verificationCode, setVerificationCode] = useState<string>("");
@@ -59,7 +54,6 @@ const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }) => {
   useEffect(() => {
     const initCapsule = async () => {
       try {
-        await capsuleClient.init();
         await checkAuthState();
       } catch (error) {
         console.error("Capsule init error:", error);
@@ -87,6 +81,7 @@ const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }) => {
       setError("Failed to check authentication state.");
     }
   };
+
 
   // Step 6: Handle user authentication
   const handleAuthentication = async () => {
@@ -327,5 +322,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-export default NativePasskeysAuth;

@@ -6,7 +6,9 @@
   ],
   "scripts": {
     "clean-install": "scripts/clean-install.sh",
-    "start": "yarn workspace @rn-integration-examples/rn-app start"
+    "new-install": "yarn install && cd packages/rn-app/ios && bundler install && bundler exec pod install && cd ../../.",
+    "start:rn": "yarn workspace @rn-integration-examples/rn-app start",
+    "start:expo": "yarn workspace @rn-integration-examples/expo-app start"
   },
   "packageManager": "yarn@1.22.22"
 }

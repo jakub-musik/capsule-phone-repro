@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
-import NativePasskeysAuth from "./NativePasskeysAuthExample";
-import WebviewPasskeysAuth from "./WebviewPasskeysAuthExample";
+import { NativePasskeysAuth } from "./NativePasskeysAuthExample";
+import { WebviewPasskeysAuth } from "./WebviewPasskeysAuthExample";
 import PolyfillCrypto from "react-native-webview-crypto"; //
 
 import Header from "./components/Header";

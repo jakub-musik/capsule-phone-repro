@@ -945,7 +945,7 @@ PODS:
     - React-Core
   - react-native-randombytes (3.6.1):
     - React-Core
-  - react-native-webview (13.10.5):
+  - react-native-webview (13.8.6):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1269,7 +1269,7 @@ DEPENDENCIES:
   - React-utils (from `../../../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../../../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../../../node_modules/@react-native-async-storage/async-storage`)"
-  - "RNCClipboard (from `../../../node_modules/@react-native-clipboard/clipboard`)"
+  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNInAppBrowser (from `../../../node_modules/react-native-inappbrowser-reborn`)
   - RNKeychain (from `../../../node_modules/react-native-keychain`)
   - Yoga (from `../../../node_modules/react-native/ReactCommon/yoga`)
@@ -1401,7 +1401,7 @@ EXTERNAL SOURCES:
   RNCAsyncStorage:
     :path: "../../../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
-    :path: "../../../node_modules/@react-native-clipboard/clipboard"
+    :path: "../node_modules/@react-native-clipboard/clipboard"
   RNInAppBrowser:
     :path: "../../../node_modules/react-native-inappbrowser-reborn"
   RNKeychain:
@@ -1445,7 +1445,7 @@ SPEC CHECKSUMS:
   react-native-modpow: cddb1fde29eba5f7acc5cc57398075f7caeeddc4
   react-native-passkey: bcb525dae0bc99c517e284dce983dcbef462ad55
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
-  react-native-webview: 553abd09f58e340fdc7746c9e2ae096839e99911
+  react-native-webview: 05bae3a03a1e4f59568dfc05286c0ebf8954106c
   React-nativeconfig: fa5de9d8f4dbd5917358f8ad3ad1e08762f01dcb
   React-NativeModulesApple: 585d1b78e0597de364d259cb56007052d0bda5e5
   React-perflogger: 7bb9ba49435ff66b666e7966ee10082508a203e8
