@@ -1,8 +1,8 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import CopyableText from "./CopyableText";
-import Input from "./Input";
-import Button from "./Button";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import CopyableText from './CopyableText';
+import Input from './Input';
+import Button from './Button';
 
 interface AuthenticatedStateProps {
   walletId: string;
@@ -11,6 +11,7 @@ interface AuthenticatedStateProps {
   messageToSign: string;
   setMessageToSign: (message: string) => void;
   handleSignMessage: () => void;
+  handleSignMessageWithSolana: () => void;
   signedMessage: string;
   isLoading: boolean;
 }
@@ -22,6 +23,7 @@ const AuthenticatedState: React.FC<AuthenticatedStateProps> = ({
   messageToSign,
   setMessageToSign,
   handleSignMessage,
+  handleSignMessageWithSolana,
   signedMessage,
   isLoading,
 }) => {
@@ -32,15 +34,21 @@ const AuthenticatedState: React.FC<AuthenticatedStateProps> = ({
       {recoveryShare && <CopyableText label="Recovery Share" value={recoveryShare} />}
       <Input value={messageToSign} onChangeText={setMessageToSign} placeholder="Enter message to sign" multiline />
       <Button title="Sign Message" onPress={handleSignMessage} disabled={!messageToSign.trim()} loading={isLoading} />
-      {signedMessage !== "" && <CopyableText label="Signed Message" value={signedMessage} />}
+      <Button
+        title="Sign Message with Solana"
+        onPress={handleSignMessageWithSolana}
+        disabled={!messageToSign.trim()}
+        loading={isLoading}
+      />
+      {signedMessage !== '' && <CopyableText label="Signed Message" value={signedMessage} />}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    alignItems: "center",
+    width: '100%',
+    alignItems: 'center',
   },
 });
 
