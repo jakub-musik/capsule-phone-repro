@@ -4,9 +4,11 @@ import { CapsuleMobile, Environment } from "@usecapsule/react-native-wallet";
 import InAppBrowser from "react-native-inappbrowser-reborn";
 import { AuthenticatedState, Button, Header, Input } from "./components";
 
-// Capsule React Native SDK integration example for Passkey via Webview authentication and message signing.
-// This tutorial provides a step-by-step guide to implement Capsule's authentication flow.
-// For additional details on the Capsule SDK, refer to: https://docs.usecapsule.com/
+// Capsule React Native SDK Integration Example: Passkey via Webview Authentication
+// This tutorial demonstrates Passkey authentication using webviews and message signing with the Capsule SDK.
+// Unlike native passkeys, this method uses in-app browsers to complete authentication steps.
+// Follow this guide to implement Capsule's webview-based authentication flow in your React Native app.
+// For comprehensive documentation on the Capsule SDK, visit: https://docs.usecapsule.com/
 
 interface WebviewPasskeysAuthProps {
   onBack: () => void;
@@ -18,6 +20,7 @@ const CAPSULE_API_KEY = "d0b61c2c8865aaa2fb12886651627271";
 
 // Step 2: Set the Capsule environment
 // Choose between Environment.DEVELOPMENT or Environment.PRODUCTION based on your use case
+
 const CAPSULE_ENVIRONMENT = Environment.DEVELOPMENT;
 
 // Step 3: (Optional) Customize the Capsule SDK integration
@@ -49,8 +52,8 @@ export const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack
   const [recoveryShare, setRecoveryShare] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Step 5: Check user's login status and initialize capsule for async storage (if needed)
-  // This effect runs on component mount to determine if the user is already logged in
+  // Step 5: Check user's login status and initialize Capsule for async storage (if needed)
+  // This step ensures that the Capsule client is initialized and the user's authentication state is verified
   useEffect(() => {
     const initCapsule = async () => {
       setIsLoading(true);
@@ -68,6 +71,7 @@ export const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack
   }, []);
 
   // Step 5.1: Check user's authentication state
+  // Verify if the user is logged in and retrieve wallet information if available
   const checkAuthState = async () => {
     try {
       const isLoggedIn = await capsuleClient.isFullyLoggedIn();
@@ -86,26 +90,11 @@ export const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack
     }
   };
 
-  // Step 6: Handle user authentication
-  const handleAuthentication = async () => {
-    setError("");
-    setIsLoading(true);
-    try {
-      const userExists = await capsuleClient.checkIfUserExists(email);
-      if (userExists) {
-        await handleLogin();
-      } else {
-        await handleCreateUser();
-      }
-    } catch (error) {
-      console.error("Authentication error:", error);
-      setError("Authentication failed. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Step 6.1: Handle user login
+  // Step 7: Handle user login
+  // Difference from native passkeys:
+  // - This method generates a web URL for authentication instead of using native APIs
+  // - User completes login in an in-app browser, not within the app's native UI
+  // - Requires waiting for the web-based login process to complete before proceeding
   const handleLogin = async () => {
     try {
       const webAuthLoginUrl = await capsuleClient.initiateUserLogin(email, true);
@@ -125,7 +114,8 @@ export const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack
     }
   };
 
-  // Step 6.2: Handle new user creation
+  // Step 8: Handle new user creation
+  // Create a new user account with the provided email address
   const handleCreateUser = async () => {
     try {
       await capsuleClient.createUser(email);
@@ -136,7 +126,11 @@ export const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack
     }
   };
 
-  // Step 7: Handle email verification and wallet creation
+  // Step 9: Handle email verification and wallet creation
+  // Key differences from native passkeys:
+  // - Uses a web-based flow for passkey creation instead of native APIs
+  // - Requires opening an in-app browser for the user to create their passkey
+  // - Wallet creation happens after the web-based passkey setup, requiring a wait step
   const handleVerification = async () => {
     setError("");
     setIsLoading(true);
@@ -161,7 +155,10 @@ export const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack
     }
   };
 
-  // Step 8: Handle message signing
+  // Step 10: Handle message signing
+  // Demonstrate direct message signing using the Capsule client
+  // Note: For production use, we recommend using established signers like ethers.js or viem
+  // For more details on signing, refer to: https://docs.usecapsule.com/integration-guides/signing-transactions
   const handleSignMessage = async () => {
     setError("");
     setIsLoading(true);
@@ -188,7 +185,8 @@ export const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack
     }
   };
 
-  // Step 9: Handle logout
+  // Step 11: Handle logout
+  // Manage the logout process and reset the application state
   const handleBack = async () => {
     if (authStage === "authenticated") {
       try {

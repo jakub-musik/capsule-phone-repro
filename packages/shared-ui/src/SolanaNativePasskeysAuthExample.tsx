@@ -7,9 +7,10 @@ import { AuthenticatedState, Button, Header, Input } from "./components";
 import * as solana from "@solana/web3.js";
 import type { Wallet } from "@usecapsule/core-sdk";
 
-// Capsule React Native SDK integration example for using Solana with Capsule's native passkeys.
-// This example demonstrates how to authenticate users using Capsule's native passkeys and sign messages using Solana's Web3.js.
-// For additional details on the Solana Capsule SDK, refer to: https://docs.usecapsule.com/integration-guides/solana
+// Capsule React Native SDK Integration Example: Solana with Native Passkeys
+// This tutorial demonstrates native Passkey authentication and Solana transaction signing using the Capsule SDK.
+// It extends the basic native passkeys example (see NativePasskeysAuthExample.tsx) with Solana-specific features.
+// For comprehensive documentation on the Capsule SDK, visit: https://docs.usecapsule.com/
 
 interface SolanaNativePasskeysAuthProps {
   onBack: () => void;
@@ -21,21 +22,25 @@ const CAPSULE_API_KEY = "d0b61c2c8865aaa2fb12886651627271";
 
 // Step 2: Set the Capsule environment
 // Choose between Environment.DEVELOPMENT or Environment.PRODUCTION based on your use case
+
 const CAPSULE_ENVIRONMENT = Environment.DEVELOPMENT;
 
-// Step 3: To work with Solana, you need to create a Capsule instance with the supportedWalletTypes option set to [WalletType.SOLANA]. Additionally, you can pass in any other constructor options as needed.
-// For additional constructor options, refer to the Capsule SDK documentation: https://docs.usecapsule.com/integration-guide/customize-capsule#constructor-options
-
+// Step 3: Configure Capsule SDK for Solana support
+// To work with Solana, create a Capsule instance with the supportedWalletTypes option set to [WalletType.SOLANA].
+// You can also pass in other constructor options as needed.
+// For additional constructor options, refer to the Capsule SDK documentation:
+// https://docs.usecapsule.com/integration-guide/customize-capsule#constructor-options
 const constructorOpts = {
   supportedWalletTypes: [WalletType.SOLANA],
 };
 
 // Step 4: Initialize the Capsule mobile client
-// Create a new Capsule instance with your environment, API key, and optional constructor parameters
+// Create a new Capsule instance with your environment, API key, and Solana-specific constructor parameters
+
 const capsuleClient = new CapsuleMobile(CAPSULE_ENVIRONMENT, CAPSULE_API_KEY, undefined, constructorOpts);
 
 // Step 5: Configure Solana Web3.js integration
-// Set the endpoint for the Solana Devnet RPC
+// Set up the Solana connection for interacting with the Solana blockchain
 const SOLANA_DEVNET_RPC_ENDPOINT = "https://api.devnet.solana.com";
 
 export const SolanaNativePasskeysAuth: React.FC<SolanaNativePasskeysAuthProps> = ({ onBack }) => {
@@ -53,7 +58,8 @@ export const SolanaNativePasskeysAuth: React.FC<SolanaNativePasskeysAuthProps> =
   const [recoveryShare, setRecoveryShare] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Step 6: You can use the useEffect hook to check the user's authentication state when the component mounts and initialize Capsule storage for async storage.
+  // Step 6: Check user's login status and initialize Capsule for async storage
+  // This step is similar to the basic native passkeys example
   useEffect(() => {
     const initCapsule = async () => {
       try {
@@ -88,33 +94,39 @@ export const SolanaNativePasskeysAuth: React.FC<SolanaNativePasskeysAuthProps> =
     }
   };
 
-  // Step 7: Handle passkey login. User will be prompted to select the passkey to login.
-  // Return after login is an array of wallets that can be for WalletType.SOLANA or WalletType.EVM
-  // Internal libraries like Solana Web3.js will filter out for the right wallet type.
-  // For displaying the right address to the user, you can filter out the wallet with the right scheme.
-  // This example focuses on just Solana wallets so we filter out the wallet with the scheme ED25519 so we can update the state.
-  // Alternatively you can grab the address from the solana signer if the solana signer is initialized higher up in the component so that is accessible here.
+  // Step 7: Handle passkey login
+  // This step manages the login process, focusing on Solana wallets:
+  // - Looks for Solana wallets (ED25519 scheme) in the returned array of wallets
+  // - Creates a Solana wallet if one doesn't exist
   const handleLogin = async () => {
     try {
-      let wallets = await capsuleClient.login();
+      // Attempt login and retrieve user's wallets
+      const wallets = await capsuleClient.login();
 
-      // If there is no wallet in the wallets array that has a scheme of ED25519, then the user has no Solana wallet. we can create one. Otherwise, we can use the existing wallet and then update state.
-      let solanaWallet = wallets.find((wallet: Wallet) => wallet.scheme === "ED25519");
+      // Find the Solana wallet (identified by ED25519 scheme)
+      let solanaWallet = wallets.find((wallet) => wallet.scheme === "ED25519");
 
+      // If no Solana wallet exists, create one
       if (!solanaWallet) {
-        let { wallets } = await capsuleClient.createWalletPerMissingType(false);
-        solanaWallet = wallets.find((wallet: Wallet) => wallet.scheme === "ED25519");
+        const { wallets: newWallets } = await capsuleClient.createWalletPerMissingType(false);
+        solanaWallet = newWallets.find((wallet) => wallet.scheme === "ED25519");
+
+        if (!solanaWallet) {
+          throw new Error("Failed to create Solana wallet");
+        }
       }
-      setWalletId(solanaWallet?.id!);
-      setWalletAddress(solanaWallet?.address!);
+
+      setWalletId(solanaWallet.id);
+      setWalletAddress(solanaWallet.address ?? "");
       setAuthStage("authenticated");
-    } catch (loginError) {
-      console.error("Login error:", loginError);
+    } catch (error) {
+      console.error("Login error:", error);
       setError("Login failed. Please check your credentials and try again.");
     }
   };
 
-  // Step 8: Handle user creation and email verification. Email needs to be verified before a passkey can be registered.
+  // Step 8: Handle new user creation
+  // Create a new user account with the provided email address
   const handleCreateUser = async () => {
     try {
       await capsuleClient.createUser(email);
@@ -125,7 +137,9 @@ export const SolanaNativePasskeysAuth: React.FC<SolanaNativePasskeysAuthProps> =
     }
   };
 
-  // Step 8.1: Handle verifying the email and registering the passkey
+  // Step 8.1: Handle email verification and passkey registration
+  // Verify the user's email, register a passkey, and create a Solana wallet for the new user
+
   const handleVerification = async () => {
     setError("");
     setIsLoading(true);
@@ -154,7 +168,8 @@ export const SolanaNativePasskeysAuth: React.FC<SolanaNativePasskeysAuthProps> =
   };
 
   // Step 9: Handle signing with the Solana Web3.js signer
-  // Create the Solana signer with the Capsule client, connection
+  // Use CapsuleSolanaWeb3Signer to create and sign Solana transactions,
+  // demonstrating integration with Solana's ecosystem tools
   const handleSignTransaction = async () => {
     setError("");
     setIsLoading(true);
@@ -188,6 +203,7 @@ export const SolanaNativePasskeysAuth: React.FC<SolanaNativePasskeysAuthProps> =
   };
 
   // Step 10: Handle logout
+  // Manage the logout process and reset the application state
   const handleBack = async () => {
     if (authStage === "authenticated") {
       try {

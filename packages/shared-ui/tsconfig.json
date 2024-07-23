@@ -8,7 +8,6 @@
     "baseUrl": ".",
     "paths": {
       "react": ["../capsuleRnExample/node_modules/@types/react"],
-      "react-native": ["../capsuleRnExample/node_modules/@types/react-native"],
       "*": ["../capsuleRnExample/node_modules/*", "../capsuleExpoExample/node_modules/*"]
     },
     "allowSyntheticDefaultImports": true,

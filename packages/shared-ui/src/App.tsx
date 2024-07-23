@@ -8,11 +8,20 @@ import Button from "./components/Button";
 import { SolanaNativePasskeysAuth } from "./SolanaNativePasskeysAuthExample";
 import PolyfillCrypto from "react-native-webview-crypto";
 
+// Entry Point for Capsule SDK Examples
+// This file serves as the main entry point for demonstrating various authentication methods
+// using Capsule's SDK in a React Native environment.
+
+// IMPORTANT: PolyfillCrypto Component
+// The PolyfillCrypto component is critical for Capsule SDK functionality.
+// It provides necessary cryptographic capabilities by adding a shim to the crypto module
+// and running a background web worker using a webview.
+// Ensure that <PolyfillCrypto /> is included at the root level of your app, as shown below.
+// Without this component, the Capsule SDK will not function correctly.
+
 interface AppProps {
   isExpo: boolean;
 }
-
-//Note that new versions of Capsule now uses PolyfillCrypto. Make sure to add <PolyfillCrypto /> in your App.tsx file.
 
 const App: React.FC<AppProps> = ({ isExpo }) => {
   const [authMethod, setAuthMethod] = useState<"native" | "webview" | "solana-native" | null>(null);

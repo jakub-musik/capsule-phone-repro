@@ -1,6 +1,6 @@
 # Capsule React Native Integration Examples
 
-Welcome to the Capsule React Native Integration Examples monorepo! This repository demonstrates how to integrate the Capsule Reaact Native SDK with various Vanilla React Native and Expo React Native, providing developers with practical, end-to-end examples for different authentication and wallet integration scenarios.
+Welcome to the Capsule React Native Integration Examples monorepo! This repository demonstrates how to integrate the Capsule React Native SDK with various Vanilla React Native and Expo React Native, providing developers with practical, end-to-end examples for different authentication and wallet integration scenarios.
 
 ## What is this Monorepo?
 
@@ -14,14 +14,14 @@ By structuring our examples this way, we provide a clear path for developers to 
 
 ## Repository Structure
 
-The monorepo is organized into two one primary directory:
+The monorepo is organized into one primary directory:
 
 ### [`packages/`](./packages/)
 
 Contains individual example applications, each configured for their framework and a shared packages and components used by the example applications
 
-- [`rn-app`](./packages/rn-app/): Example using React Native scaffolded with the React Native Community CLI.
-- [`expo-app`](./packages/expo-app/): Example using Expo
+- [`capsuleRnExample`](./packages/capsuleRnExample/): Example using React Native scaffolded with the React Native Community CLI.
+- [`capsuleExpoExample`](./packages/capsuleExpoExample/): Example using Expo
 - [`shared-ui`](./packages/shared-ui/): Houses shared React Native components and example implementations with end-to-end examples for various Capsule integration scenarios
 
 Each of these applications demonstrates how to set up and use Capsule within its specific framework context. You can reference the app folders for app specific configurations and the shared-ui for Capsule integration examples.
@@ -30,8 +30,9 @@ Each of these applications demonstrates how to set up and use Capsule within its
 
 The [`packages/shared-ui/src`](./packages/shared-ui/src/) folder contains dedicated files for each React Native Capsule integration flow. Here's a brief overview:
 
-- [**NativePasskeysAuthExample**](./packages/shared-ui/src//NativePasskeysAuthExample.tsx): Shows how to implement authentication using native Passkeys (**Recommended**).
+- [**NativePasskeysAuthExample**](./packages/shared-ui/src/NativePasskeysAuthExample.tsx): Shows how to implement authentication using native Passkeys (**Recommended**).
 - [**WebviewPasskeysAuthExample**](./packages/shared-ui/src/WebviewPasskeysAuthExample.tsx): Demonstrates email-based authentication using the Webview and Capsules Web Portal.
+- [**SolanaNativePasskeysAuthExample**](./packages/shared-ui/src/SolanaNativePasskeysAuthExample.tsx): Illustrates how to implement Solana wallet integration with native Passkeys authentication.
 
 ## Getting Started
 
@@ -58,12 +59,20 @@ The [`packages/shared-ui/src`](./packages/shared-ui/src/) folder contains dedica
    yarn install
    ```
 
-3. Install iOS dependencies:
+3. For the React Native app:
+
    ```sh
-   cd packages/rn-app/ios
+   cd packages/capsuleRnExample/ios
    bundler install
    bundler exec pod install
    cd ../../..
+   ```
+
+4. For the Expo app:
+   ```sh
+   cd packages/capsuleExpoExample
+   npx expo prebuild
+   cd ../..
    ```
 
 ### Running Examples
@@ -77,46 +86,76 @@ You can start the React Native and Expo applications:
   ```
 
 - Start Expo App:
+
   ```sh
   yarn start:expo
+  ```
+
+  For iOS:
+
+  ```sh
+  npx expo run:ios
+  ```
+
+  For Android:
+
+  ```sh
+  npx expo run:android
   ```
 
 ### Clean Installation
 
 If you need to perform a clean installation:
 
-```sh
-yarn clean-install
-```
+1. Make the clean script executable:
 
-## Why This Structure?
+   ```sh
+   chmod +x scripts/clean.sh
+   ```
 
-1. **Shared UI Components**: The `packages/shared-ui` directory contains shared components used by both the React Native and Expo apps.
-2. **Native and Webview Examples**: Both native and webview implementations of Passkeys authentication are demonstrated.
-3. **Monorepo Benefits**: This structure allows for easy sharing of code and dependencies between different parts of the project.
-4. **Framework Flexibility**: Developers can see how to integrate Capsule in both React Native CLI and Expo environments.
+2. Run the clean script:
+   ```sh
+   yarn clean
+   ```
+
+This script will clean all caches and node_modules folders. It's recommended to run this when you encounter persistent issues.
 
 ## Troubleshooting
 
 If you encounter any issues:
 
-1. Ensure all dependencies are installed in both the root and individual package directories.
-2. For iOS issues, try cleaning the build folder and reinstalling pods:
+1. Try performing a clean installation using the `yarn clean` command as described above.
+
+2. For the React Native app, ensure all dependencies are installed:
+
    ```sh
-   cd packages/rn-app/ios
-   bundler exec pod deintegrate
+   cd packages/capsuleRnExample
+   yarn install
+   cd ios
    bundler install
    bundler exec pod install
    ```
-3. For Android issues, try cleaning the gradle build:
+
+3. For the Expo app, try rebuilding:
+
    ```sh
-   cd packages/rn-app/android
-   ./gradlew clean
+   cd packages/capsuleExpoExample
+   npx expo prebuild --clean
    ```
+
 4. If Metro bundler issues persist, try clearing the cache:
+
    ```sh
    yarn start --reset-cache
    ```
+
+5. For Android issues, try cleaning the gradle build:
+   ```sh
+   cd packages/capsuleRnExample/android
+   ./gradlew clean
+   ```
+
+Remember, running `yarn clean` in the root directory will handle cache cleaning for yarn, metro, watchman, and other related caches. This is often a good first step when troubleshooting persistent issues.
 
 For further troubleshooting, please refer to the [Capsule documentation](https://docs.usecapsule.com/troubleshooting/troubleshooting).
 

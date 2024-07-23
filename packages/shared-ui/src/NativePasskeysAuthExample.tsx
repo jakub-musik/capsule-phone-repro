@@ -4,9 +4,10 @@ import { CapsuleMobile, Environment, WalletType } from "@usecapsule/react-native
 import { webcrypto } from "crypto";
 import { AuthenticatedState, Button, Header, Input } from "./components";
 
-// Capsule React Native SDK integration example for native Passkey authentication and message signing.
-// This tutorial provides a step-by-step guide to implement Capsule's authentication flow.
-// For additional details on the Capsule SDK, refer to: https://docs.usecapsule.com/
+// Capsule React Native SDK Integration Example
+// This tutorial demonstrates native Passkey authentication and message signing using the Capsule SDK.
+// Follow this step-by-step guide to implement Capsule's authentication flow in your React Native app.
+// For comprehensive documentation on the Capsule SDK, visit: https://docs.usecapsule.com/
 
 interface NativePasskeysAuthProps {
   onBack: () => void;
@@ -50,7 +51,8 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
   const [recoveryShare, setRecoveryShare] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Step 5: You can check the user's login status on app load
+  // Step 5: Check the user's login status on app load
+  // This step ensures that the Capsule client is initialized and the user's authentication state is verified
   useEffect(() => {
     const initCapsule = async () => {
       try {
@@ -65,6 +67,7 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
   }, []);
 
   // Step 5.1: Check user's authentication state
+  // Verify if the user is logged in and retrieve wallet information if available
   const checkAuthState = async () => {
     try {
       const isLoggedIn = await capsuleClient.isFullyLoggedIn();
@@ -83,39 +86,31 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
     }
   };
 
-  // Step 6: Handle user authentication
-  const handleAuthentication = async () => {
-    setError("");
-    setIsLoading(true);
-    try {
-      const userExists = await capsuleClient.checkIfUserExists(email);
-      if (userExists) {
-        await handleLogin();
-      } else {
-        await handleCreateUser();
-      }
-    } catch (checkUserError) {
-      console.error("Error checking user existence:", checkUserError);
-      setError("Unable to verify user status. Please try again later.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // Step 6.1: Handle user login
+  // This step manages the login process for an EVM wallet:
+  // - The login() function returns an array of available wallets
+  // - The first wallet in the array is assumed to be the EVM wallet (default wallet type)
+  // - For handling multiple wallet types, refer to the SolanaNativePasskeysAuthExample.tsx file
   const handleLogin = async () => {
     try {
-      const wallet = await capsuleClient.login();
-      setWalletId(wallet.id!);
-      setWalletAddress(wallet.address!);
+      const wallets = await capsuleClient.login();
+      const wallet = wallets[0];
+
+      if (!wallet) {
+        throw new Error("No wallet found after login");
+      }
+
+      setWalletId(wallet.id);
+      setWalletAddress(wallet.address ?? "");
       setAuthStage("authenticated");
-    } catch (loginError) {
-      console.error("Login error:", loginError);
+    } catch (error) {
+      console.error("Login error:", error);
       setError("Login failed. Please check your credentials and try again.");
     }
   };
 
   // Step 6.2: Handle new user creation
+  // Create a new user account with the provided email address
   const handleCreateUser = async () => {
     try {
       await capsuleClient.createUser(email);
@@ -127,6 +122,7 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
   };
 
   // Step 7: Handle email verification and passkey registration
+  // Verify the user's email, register a passkey, and create wallets for the new user
   const handleVerification = async () => {
     setError("");
     setIsLoading(true);
@@ -137,11 +133,11 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
         return;
       }
       await capsuleClient.registerPasskey(email, biometricsId, crypto as webcrypto.Crypto);
-      const [, share] = await capsuleClient.createWallet(false);
-      setRecoveryShare(share ?? "");
-      const wallet = await capsuleClient.login();
-      setWalletId(wallet.id!);
-      setWalletAddress(wallet.address!);
+      const { wallets, recoverySecret } = await capsuleClient.createWalletPerMissingType(false);
+
+      setRecoveryShare(recoverySecret ?? "");
+      setWalletId(wallets[0].id!);
+      setWalletAddress(wallets[0].address!);
       setAuthStage("authenticated");
     } catch (error) {
       console.error("Verification error:", error);
@@ -151,7 +147,10 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
     }
   };
 
-  // Step 8: Handle message signing.
+  // Step 8: Handle message signing
+  // Demonstrate direct message signing using the Capsule client
+  // Note: For production use, we recommend using established signers like ethers.js or viem
+  // For more details on signing, refer to: https://docs.usecapsule.com/integration-guides/signing-transactions
   const handleSignMessage = async () => {
     setError("");
     setIsLoading(true);
@@ -178,6 +177,7 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
   };
 
   // Step 9: Handle logout
+  // Manage the logout process and reset the application state
   const handleBack = async () => {
     if (authStage === "authenticated") {
       try {
