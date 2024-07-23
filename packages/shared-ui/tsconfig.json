@@ -1,10 +1,25 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext"],
     "jsx": "react-native",
+    "moduleResolution": "node",
+    "baseUrl": ".",
     "paths": {
+      "react": ["../capsuleRnExample/node_modules/@types/react"],
+      "react-native": ["../capsuleRnExample/node_modules/@types/react-native"],
       "*": ["../capsuleRnExample/node_modules/*", "../capsuleExpoExample/node_modules/*"]
-    }
-  }
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

@@ -249,7 +249,17 @@ export const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack
     switch (authStage) {
       case "initial":
         return (
-          <Button title="Authenticate" onPress={handleAuthentication} disabled={!email.trim()} loading={isLoading} />
+          <>
+            <Button title="Create Passkey" onPress={handleCreateUser} disabled={!email.trim()} loading={isLoading} />
+            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 16 }}>
+              <View style={{ flex: 1, height: 1, backgroundColor: "#d3d3d3" }} />
+              <View>
+                <Text style={{ width: 50, textAlign: "center", fontWeight: "bold", color: "white" }}>OR</Text>
+              </View>
+              <View style={{ flex: 1, height: 1, backgroundColor: "#d3d3d3" }} />
+            </View>
+            <Button title="Login with Passkey" onPress={handleLogin} loading={isLoading} />
+          </>
         );
       case "verification":
         return (
