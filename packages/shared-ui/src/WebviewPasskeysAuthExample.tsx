@@ -55,6 +55,7 @@ export const WebviewPasskeysAuth: React.FC<WebviewPasskeysAuthProps> = ({ onBack
     const initCapsule = async () => {
       setIsLoading(true);
       try {
+        await capsuleClient.init();
         await checkAuthState();
       } catch (error) {
         console.error("Capsule init error:", error);

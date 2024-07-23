@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react-native",
+    "paths": {
+      "*": ["../capsuleRnExample/node_modules/*", "../capsuleExpoExample/node_modules/*"]
+    }
+  }
+}

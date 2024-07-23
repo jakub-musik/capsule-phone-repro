@@ -1,0 +1,20 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": ["./*"],
+      "@rn-integration-examples/shared-ui": ["../shared-ui/src"],
+      "@rn-integration-examples/shared-ui/*": ["../shared-ui/src/*"]
+    },
+    "baseUrl": "."
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "../shared-ui/src/**/*.ts",
+    "../shared-ui/src/**/*.tsx"
+  ]
+}

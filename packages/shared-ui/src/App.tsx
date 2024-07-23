@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
-import { NativePasskeysAuth } from './NativePasskeysAuthExample';
-import { WebviewPasskeysAuth } from './WebviewPasskeysAuthExample';
-import PolyfillCrypto from 'react-native-webview-crypto'; //
+import { useState } from "react";
+import { View, StyleSheet, SafeAreaView } from "react-native";
+import { NativePasskeysAuth } from "./NativePasskeysAuthExample";
+import { WebviewPasskeysAuth } from "./WebviewPasskeysAuthExample";
 
-import Header from './components/Header';
-import Button from './components/Button';
+import Header from "./components/Header";
+import Button from "./components/Button";
+import { SolanaNativePasskeysAuth } from "./SolanaNativePasskeysAuthExample";
+import PolyfillCrypto from "react-native-webview-crypto";
 
 interface AppProps {
   isExpo: boolean;
@@ -14,7 +15,7 @@ interface AppProps {
 //Note that new versions of Capsule now uses PolyfillCrypto. Make sure to add <PolyfillCrypto /> in your App.tsx file.
 
 const App: React.FC<AppProps> = ({ isExpo }) => {
-  const [authMethod, setAuthMethod] = useState<'native' | 'webview' | null>(null);
+  const [authMethod, setAuthMethod] = useState<"native" | "webview" | "solana-native" | null>(null);
 
   const handleBack = () => {
     setAuthMethod(null);
@@ -23,22 +24,26 @@ const App: React.FC<AppProps> = ({ isExpo }) => {
   const renderAuthOptions = () => (
     <View style={styles.content}>
       <Header
-        title={isExpo ? 'Capsule SDK Expo Example' : 'Capsule SDK React Native Example'}
+        title={isExpo ? "Capsule SDK Expo Example" : "Capsule SDK React Native Example"}
         description="This app demonstrates the usage of Capsule's SDK for React Native. Please select an authentication method below."
       />
       <View style={styles.authOptionsContainer}>
-        <Button title="Native Passkeys (Recommended)" onPress={() => setAuthMethod('native')} />
-        <Button title="Webview Passkeys" onPress={() => setAuthMethod('webview')} />
+        <Button title="Native Passkeys (Recommended)" onPress={() => setAuthMethod("native")} />
+        <Button title="Webview Passkeys" onPress={() => setAuthMethod("webview")} />
+        <Button title="Solana with Native Passkeys" onPress={() => setAuthMethod("solana-native")} />
       </View>
     </View>
   );
 
   const renderContent = () => {
     switch (authMethod) {
-      case 'native':
+      case "native":
         return <NativePasskeysAuth onBack={handleBack} />;
-      case 'webview':
+      case "webview":
         return <WebviewPasskeysAuth onBack={handleBack} />;
+      case "solana-native":
+        return <SolanaNativePasskeysAuth onBack={handleBack} />;
+        return;
       default:
         return renderAuthOptions();
     }
@@ -55,7 +60,7 @@ const App: React.FC<AppProps> = ({ isExpo }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0c0a09',
+    backgroundColor: "#0c0a09",
   },
   container: {
     flex: 1,
@@ -63,12 +68,12 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   authOptionsContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 16,
   },
 });

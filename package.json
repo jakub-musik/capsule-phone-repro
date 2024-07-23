@@ -1,14 +1,15 @@
 {
   "name": "rn-integration-examples",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
-    "clean-install": "scripts/clean-install.sh",
-    "new-install": "yarn install && cd packages/rn-app/ios && bundler install && bundler exec pod install && cd ../../.",
-    "start:rn": "yarn workspace @rn-integration-examples/rn-app start",
-    "start:expo": "yarn workspace @rn-integration-examples/expo-app start"
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**"
+    ]
   },
-  "packageManager": "yarn@1.22.22"
+  "scripts": {
+    "clean": "scripts/clean.sh"
+  }
 }
