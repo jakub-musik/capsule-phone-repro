@@ -127,6 +127,7 @@ export const SolanaNativePasskeysAuth: React.FC<SolanaNativePasskeysAuthProps> =
 
   // Step 8: Handle new user creation
   // Create a new user account with the provided email address
+  // The user will receive a verification code via email to complete the registration process
   const handleCreateUser = async () => {
     try {
       await capsuleClient.createUser(email);

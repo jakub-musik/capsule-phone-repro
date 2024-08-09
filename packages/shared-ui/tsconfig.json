@@ -7,8 +7,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "react": ["../capsuleRnExample/node_modules/@types/react"],
-      "*": ["../capsuleRnExample/node_modules/*", "../capsuleExpoExample/node_modules/*"]
+      "react": ["../with-rn/node_modules/@types/react"],
+      "*": ["../with-rn/node_modules/*", "../with-expo/node_modules/*"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -19,6 +19,6 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "env.d.ts"],
   "exclude": ["node_modules"]
 }

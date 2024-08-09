@@ -20,8 +20,8 @@ The monorepo is organized into one primary directory:
 
 Contains individual example applications, each configured for their framework and a shared packages and components used by the example applications
 
-- [`capsuleRnExample`](./packages/capsuleRnExample/): Example using React Native scaffolded with the React Native Community CLI.
-- [`capsuleExpoExample`](./packages/capsuleExpoExample/): Example using Expo
+- [`with-rn`](./packages/with-rn/): Example using React Native scaffolded with the React Native Community CLI.
+- [`with-expo`](./packages/with-expo/): Example using Expo
 - [`shared-ui`](./packages/shared-ui/): Houses shared React Native components and example implementations with end-to-end examples for various Capsule integration scenarios
 
 Each of these applications demonstrates how to set up and use Capsule within its specific framework context. You can reference the app folders for app specific configurations and the shared-ui for Capsule integration examples.
@@ -62,7 +62,7 @@ The [`packages/shared-ui/src`](./packages/shared-ui/src/) folder contains dedica
 3. For the React Native app:
 
    ```sh
-   cd packages/capsuleRnExample/ios
+   cd packages/with-rn/ios
    bundler install
    bundler exec pod install
    cd ../../..
@@ -70,7 +70,7 @@ The [`packages/shared-ui/src`](./packages/shared-ui/src/) folder contains dedica
 
 4. For the Expo app:
    ```sh
-   cd packages/capsuleExpoExample
+   cd packages/with-expo
    npx expo prebuild
    cd ../..
    ```
@@ -129,7 +129,7 @@ If you encounter any issues:
 2. For the React Native app, ensure all dependencies are installed:
 
    ```sh
-   cd packages/capsuleRnExample
+   cd packages/with-rn
    yarn install
    cd ios
    bundler install
@@ -139,7 +139,7 @@ If you encounter any issues:
 3. For the Expo app, try rebuilding:
 
    ```sh
-   cd packages/capsuleExpoExample
+   cd packages/with-expo
    npx expo prebuild --clean
    ```
 
@@ -151,7 +151,7 @@ If you encounter any issues:
 
 5. For Android issues, try cleaning the gradle build:
    ```sh
-   cd packages/capsuleRnExample/android
+   cd packages/with-rn/android
    ./gradlew clean
    ```
 

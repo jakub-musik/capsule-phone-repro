@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { API_KEY } from "@env";
 import { CapsuleMobile, Environment, WalletType } from "@usecapsule/react-native-wallet";
 import { webcrypto } from "crypto";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AuthenticatedState, Button, Header, Input } from "./components";
 
-// Capsule React Native SDK Integration Example
+// Capsule React Native SDK Integration Example with Native Passkeys
 // This tutorial demonstrates native Passkey authentication and message signing using the Capsule SDK.
 // Follow this step-by-step guide to implement Capsule's authentication flow in your React Native app.
 // For comprehensive documentation on the Capsule SDK, visit: https://docs.usecapsule.com/
@@ -14,14 +15,14 @@ interface NativePasskeysAuthProps {
 }
 
 // Step 1: Set up your Capsule API key
-// Obtain your API key from https://usecapsule.com/beta
-const CAPSULE_API_KEY = "d0b61c2c8865aaa2fb12886651627271";
+// Obtain your API key from the Capsule Developer Portal: https://developer.usecapsule.com/
+const CAPSULE_API_KEY = API_KEY;
 
 // Step 2: Set the Capsule environment
 // Choose between Environment.DEVELOPMENT or Environment.PRODUCTION based on your use case
 const CAPSULE_ENVIRONMENT = Environment.DEVELOPMENT;
 
-// Step 3: (Optional) Customize the Capsule SDK integration
+// Step 3: (Optional but Recommended) Customize the Capsule SDK integration
 // These options allow you to tailor the look and feel of the Capsule integration
 // For a full list of constructor options, visit:
 // https://docs.usecapsule.com/integration-guide/customize-capsule#constructor-options
@@ -32,7 +33,6 @@ const constructorOpts = {
   xUrl: "https://x.com/usecapsule",
   homepageUrl: "https://usecapsule.com/",
   supportUrl: "https://usecapsule.com/talk-to-us",
-  supportedWalletTypes: [WalletType.EVM, WalletType.SOLANA],
 };
 
 // Step 4: Initialize the Capsule client
@@ -87,11 +87,12 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
   };
 
   // Step 6.1: Handle user login
-  // This step manages the login process for an EVM wallet:
+  // This step manages the login process for a wallet:
   // - The login() function returns an array of available wallets
   // - The first wallet in the array is assumed to be the EVM wallet (default wallet type)
   // - For handling multiple wallet types, refer to the SolanaNativePasskeysAuthExample.tsx file
   const handleLogin = async () => {
+    setError("");
     try {
       const wallets = await capsuleClient.login();
       const wallet = wallets[0];
@@ -111,13 +112,14 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
 
   // Step 6.2: Handle new user creation
   // Create a new user account with the provided email address
+  // The user will receive a verification code via email to complete the registration process
   const handleCreateUser = async () => {
     try {
       await capsuleClient.createUser(email);
       setAuthStage("verification");
     } catch (createUserError) {
       console.error("User creation error:", createUserError);
-      setError("Failed to create user. Please try again or contact support.");
+      setError("Failed to create user.");
     }
   };
 
@@ -133,7 +135,7 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
         return;
       }
       await capsuleClient.registerPasskey(email, biometricsId, crypto as webcrypto.Crypto);
-      const { wallets, recoverySecret } = await capsuleClient.createWalletPerMissingType(false);
+      const { wallets, recoverySecret } = await capsuleClient.createWalletPerMissingType();
 
       setRecoveryShare(recoverySecret ?? "");
       setWalletId(wallets[0].id!);

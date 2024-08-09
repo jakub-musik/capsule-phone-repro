@@ -34,8 +34,8 @@ rm -rf coverage
 rm -rf dist
 rm -rf build
 
-clean_package "capsuleRnExample"
-clean_package "capsuleExpoExample"
+clean_package "with-rn"
+clean_package "with-expo"
 clean_package "shared-ui"
 
 echo "Cleaning Yarn cache..."
