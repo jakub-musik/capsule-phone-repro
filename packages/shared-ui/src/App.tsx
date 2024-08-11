@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Button from "./components/Button";
 import { SolanaNativePasskeysAuth } from "./SolanaNativePasskeysAuthExample";
 import PolyfillCrypto from "react-native-webview-crypto";
+import { PhonePasskeysAuth } from "./PhonePasskeysAuthExample";
 
 // Entry Point for Capsule SDK Examples
 // This file serves as the main entry point for demonstrating various authentication methods
@@ -24,7 +25,7 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({ isExpo }) => {
-  const [authMethod, setAuthMethod] = useState<"native" | "webview" | "solana-native" | null>(null);
+  const [authMethod, setAuthMethod] = useState<"native" | "webview" | "solana-native" | "phone" | null>(null);
 
   const handleBack = () => {
     setAuthMethod(null);
@@ -37,9 +38,10 @@ const App: React.FC<AppProps> = ({ isExpo }) => {
         description="This app demonstrates the usage of Capsule's SDK for React Native. Please select an authentication method below."
       />
       <View style={styles.authOptionsContainer}>
-        <Button title="Native Passkeys (Recommended)" onPress={() => setAuthMethod("native")} />
+        <Button title="Email + Native Passkeys (Recommended)" onPress={() => setAuthMethod("native")} />
         <Button title="Webview Passkeys" onPress={() => setAuthMethod("webview")} />
         <Button title="Solana with Native Passkeys" onPress={() => setAuthMethod("solana-native")} />
+        <Button title="Phone Number + Native Passkeys" onPress={() => setAuthMethod("phone")} />
       </View>
     </View>
   );
@@ -52,7 +54,8 @@ const App: React.FC<AppProps> = ({ isExpo }) => {
         return <WebviewPasskeysAuth onBack={handleBack} />;
       case "solana-native":
         return <SolanaNativePasskeysAuth onBack={handleBack} />;
-        return;
+      case "phone":
+        return <PhonePasskeysAuth onBack={handleBack} />;
       default:
         return renderAuthOptions();
     }

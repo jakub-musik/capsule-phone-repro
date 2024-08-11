@@ -3141,7 +3141,7 @@
     libphonenumber-js "1.11.2"
     node-forge "^1.3.1"
 
-"@usecapsule/react-native-passkey@2.2.0-dev.2", "@usecapsule/react-native-passkey@^2.2.0-dev.1":
+"@usecapsule/react-native-passkey@2.2.0-dev.2":
   version "2.2.0-dev.2"
   resolved "https://registry.yarnpkg.com/@usecapsule/react-native-passkey/-/react-native-passkey-2.2.0-dev.2.tgz#ac2e5f6b8a81c9c777352c9c4296af65589486fe"
   integrity sha512-oko3x9b10hcnNloL5PrX4IRUa+7A0ncvWYdPygvoWonhGOeR5/elmUY1hC1cL9DW7aNoUsPEfM+qOuc46NGukg==
@@ -3151,10 +3151,10 @@
   resolved "https://registry.yarnpkg.com/@usecapsule/react-native-passkey/-/react-native-passkey-2.2.0-dev.4.tgz#68301df4059d2ce584381835b87e8ab8d198b9b4"
   integrity sha512-9IEpaJvmV6+KRAw72HjMytaNFxEOTwaYXD/twKMAtqgEcwACxlbuNHEp7ApvzBscjnBMT98uXoBRXTSVvBBT+Q==
 
-"@usecapsule/react-native-wallet@^1.5.0-dev.1":
-  version "1.5.0-dev.5"
-  resolved "https://registry.yarnpkg.com/@usecapsule/react-native-wallet/-/react-native-wallet-1.5.0-dev.5.tgz#89c95a2c2deb4f5ed47473bca845008548950fa1"
-  integrity sha512-0jPySKi658Hin53QTpVFhucYtcMnO3JM/498FRokLNW3BIw90haIU/6vCpr1nzoTg64qjurRcSRkjiE1HV6DeQ==
+"@usecapsule/react-native-wallet@^1.5.0-dev.6":
+  version "1.5.0-dev.6"
+  resolved "https://registry.yarnpkg.com/@usecapsule/react-native-wallet/-/react-native-wallet-1.5.0-dev.6.tgz#f94bc840bd65d5734720f309710f4b5c8742d148"
+  integrity sha512-DP1x6iu5MvheSUukIshdcBfPAFN8otft42QOsGhVKmkG41ksFFpStU2qIoaJiauahVyC09bKh/fpujhrxWwBUg==
   dependencies:
     "@react-native-async-storage/async-storage" "^1.15.14"
     "@usecapsule/core-sdk" "1.19.0"
@@ -3173,10 +3173,10 @@
     react-native-modpow "^1.1.1-0"
     text-encoding "^0.7.0"
 
-"@usecapsule/react-native-wallet@^1.5.0-dev.6":
-  version "1.5.0-dev.6"
-  resolved "https://registry.yarnpkg.com/@usecapsule/react-native-wallet/-/react-native-wallet-1.5.0-dev.6.tgz#f94bc840bd65d5734720f309710f4b5c8742d148"
-  integrity sha512-DP1x6iu5MvheSUukIshdcBfPAFN8otft42QOsGhVKmkG41ksFFpStU2qIoaJiauahVyC09bKh/fpujhrxWwBUg==
+"@usecapsule/react-native-wallet@^1.6.0-dev.1":
+  version "1.6.0-dev.1"
+  resolved "https://registry.yarnpkg.com/@usecapsule/react-native-wallet/-/react-native-wallet-1.6.0-dev.1.tgz#713a8b5f5fab0e0be5a6be7ee416d757b4999e83"
+  integrity sha512-OPLI7XfpvaQBTJTxVjEbVDTssfrYBS7YHgUJbDgHFpExlbdz4tu44/Q4+ufTS5/pezyayz/QnFZ5fVtG2CAVQQ==
   dependencies:
     "@react-native-async-storage/async-storage" "^1.15.14"
     "@usecapsule/core-sdk" "1.19.0"
@@ -6971,6 +6971,11 @@ libphonenumber-js@1.11.2:
   version "1.11.2"
   resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.11.2.tgz#9ddd7d1a1e1be0e7c596c7e09487c362b4f1210c"
   integrity sha512-V9mGLlaXN1WETzqQvSu6qf6XVAr3nFuJvWsHcuzCCCo6xUKawwSxOPTpan5CGOSKTn5w/bQuCZcLPJkyysgC3w==
+
+libphonenumber-js@^1.11.5:
+  version "1.11.5"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.11.5.tgz#50a441da5ff9ed9a322d796a14f1e9cbc0fdabdf"
+  integrity sha512-TwHR5BZxGRODtAfz03szucAkjT5OArXr+94SMtAM2pYXIlQNVMrxvb6uSCbnaJJV6QXEyICk7+l6QPgn72WHhg==
 
 lighthouse-logger@^1.0.0:
   version "1.4.2"
