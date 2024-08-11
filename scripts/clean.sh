@@ -12,7 +12,8 @@ clean_package() {
   rm -rf "packages/$1/dist"
   rm -rf "packages/$1/build"
   
-  if [ "$1" = "rn-app" ]; then
+  if [ "$1" = "with-rn" ]; then
+  echo "Cleaning $1 iOS and Android build artifacts..."
     rm -rf "packages/$1/ios/Pods"
     rm -f "packages/$1/ios/Podfile.lock"
     rm -rf "packages/$1/ios/build"

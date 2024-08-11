@@ -1,4 +1,4 @@
-import { API_KEY } from "@env";
+import { CAPSULE_API } from "@env";
 import { CapsuleMobile, Environment, WalletType } from "@usecapsule/react-native-wallet";
 import { webcrypto } from "crypto";
 import React, { useEffect, useState } from "react";
@@ -16,7 +16,7 @@ interface NativePasskeysAuthProps {
 
 // Step 1: Set up your Capsule API key
 // Obtain your API key from the Capsule Developer Portal: https://developer.usecapsule.com/
-const CAPSULE_API_KEY = API_KEY;
+const CAPSULE_API_KEY = CAPSULE_API;
 
 // Step 2: Set the Capsule environment
 // Choose between Environment.DEVELOPMENT or Environment.PRODUCTION based on your use case
@@ -94,7 +94,7 @@ export const NativePasskeysAuth: React.FC<NativePasskeysAuthProps> = ({ onBack }
   const handleLogin = async () => {
     setError("");
     try {
-      const wallets = await capsuleClient.login();
+      const wallets = await capsuleClient.login(email ?? undefined);
       const wallet = wallets[0];
 
       if (!wallet) {
