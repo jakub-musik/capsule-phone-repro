@@ -1,11 +1,12 @@
 import React from "react";
+import { KeyboardTypeOptions } from "react-native";
 import { TextInput, StyleSheet } from "react-native";
 
 interface InputProps {
   value: string;
   onChangeText: (text: string) => void;
   placeholder: string;
-  keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
+  keyboardType?: KeyboardTypeOptions;
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
   multiline?: boolean;
 }
