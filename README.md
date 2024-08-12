@@ -2,6 +2,12 @@
 
 Welcome to the Capsule React Native Integration Examples monorepo! This repository demonstrates how to integrate the Capsule React Native SDK with various Vanilla React Native and Expo React Native, providing developers with practical, end-to-end examples for different authentication and wallet integration scenarios.
 
+## Getting Started
+
+First, make sure you have an API key. You can get one by filling out [this form](usecapsule.com/api) and getting access to the Developer Portal
+
+Next, please read the [setup guides](https://docs.usecapsule.com/getting-started/initial-setup/react-native-and-expo-setup) for repository-level setup instructions before implementing integrations based off these examples. If you're just running the examples, you can skip this step.
+
 ## What is this Monorepo?
 
 This monorepo serves as a comprehensive resource for developers looking to integrate Capsule into their React Native mobile applications. It showcases:
