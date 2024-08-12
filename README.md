@@ -77,8 +77,8 @@ The [`packages/shared-ui/src`](./packages/shared-ui/src/) folder contains dedica
    cd ../..
    ```
 
-   > [!NOTE]  
-   > For phone based authentication use the latest dev tag release of the SDK package.
+> [!NOTE]
+> For phone based authentication use the latest dev tag release of the SDK package.
 
 ### Running Examples
 
