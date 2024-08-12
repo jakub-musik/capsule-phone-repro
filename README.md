@@ -33,6 +33,7 @@ The [`packages/shared-ui/src`](./packages/shared-ui/src/) folder contains dedica
 - [**NativePasskeysAuthExample**](./packages/shared-ui/src/NativePasskeysAuthExample.tsx): Shows how to implement authentication using native Passkeys (**Recommended**).
 - [**WebviewPasskeysAuthExample**](./packages/shared-ui/src/WebviewPasskeysAuthExample.tsx): Demonstrates email-based authentication using the Webview and Capsules Web Portal.
 - [**SolanaNativePasskeysAuthExample**](./packages/shared-ui/src/SolanaNativePasskeysAuthExample.tsx): Illustrates how to implement Solana wallet integration with native Passkeys authentication.
+- [**PhonePasskeysAuthExample**](./packages//shared-ui/src/PhonePasskeysAuthExample.tsx): Shows how to implement the same auth as NativePasskeysAuthExample but using a Phone number.
 
 ## Getting Started
 
@@ -69,11 +70,15 @@ The [`packages/shared-ui/src`](./packages/shared-ui/src/) folder contains dedica
    ```
 
 4. For the Expo app:
+
    ```sh
    cd packages/with-expo
    npx expo prebuild
    cd ../..
    ```
+
+   > [!NOTE]  
+   > For phone based authentication use the latest dev tag release of the SDK package.
 
 ### Running Examples
 
