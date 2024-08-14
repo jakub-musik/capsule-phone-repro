@@ -22,7 +22,7 @@
     "@react-navigation/native": "^6.0.2",
     "@solana/web3.js": "^1.95.1",
     "@usecapsule/react-native-passkey": "^2.2.0-dev.4",
-    "@usecapsule/react-native-wallet": "^1.5.0-dev.6",
+    "@usecapsule/react-native-wallet": "^1.6.1-dev.2",
     "@usecapsule/solana-web3.js-v1-integration": "^0.8.0",
     "expo": "~51.0.22",
     "expo-constants": "~16.0.2",

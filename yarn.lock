@@ -3141,46 +3141,19 @@
     libphonenumber-js "1.11.2"
     node-forge "^1.3.1"
 
-"@usecapsule/react-native-passkey@2.2.0-dev.2":
-  version "2.2.0-dev.2"
-  resolved "https://registry.yarnpkg.com/@usecapsule/react-native-passkey/-/react-native-passkey-2.2.0-dev.2.tgz#ac2e5f6b8a81c9c777352c9c4296af65589486fe"
-  integrity sha512-oko3x9b10hcnNloL5PrX4IRUa+7A0ncvWYdPygvoWonhGOeR5/elmUY1hC1cL9DW7aNoUsPEfM+qOuc46NGukg==
-
-"@usecapsule/react-native-passkey@^2.2.0-dev.4":
+"@usecapsule/react-native-passkey@2.2.0-dev.4", "@usecapsule/react-native-passkey@^2.2.0-dev.4":
   version "2.2.0-dev.4"
   resolved "https://registry.yarnpkg.com/@usecapsule/react-native-passkey/-/react-native-passkey-2.2.0-dev.4.tgz#68301df4059d2ce584381835b87e8ab8d198b9b4"
   integrity sha512-9IEpaJvmV6+KRAw72HjMytaNFxEOTwaYXD/twKMAtqgEcwACxlbuNHEp7ApvzBscjnBMT98uXoBRXTSVvBBT+Q==
 
-"@usecapsule/react-native-wallet@^1.5.0-dev.6":
-  version "1.5.0-dev.6"
-  resolved "https://registry.yarnpkg.com/@usecapsule/react-native-wallet/-/react-native-wallet-1.5.0-dev.6.tgz#f94bc840bd65d5734720f309710f4b5c8742d148"
-  integrity sha512-DP1x6iu5MvheSUukIshdcBfPAFN8otft42QOsGhVKmkG41ksFFpStU2qIoaJiauahVyC09bKh/fpujhrxWwBUg==
+"@usecapsule/react-native-wallet@^1.6.1-dev.2":
+  version "1.6.1-dev.2"
+  resolved "https://registry.yarnpkg.com/@usecapsule/react-native-wallet/-/react-native-wallet-1.6.1-dev.2.tgz#c17ef6e7cd09465c777c15eb7a65f190ab9c3c56"
+  integrity sha512-ZVfp2Mf/XNH2yk1E0GnWc1XbjrgHnkCDsfi4NU253lgQVoZeQDpcOM3mocPITBzWfd1Ex84t1ZcNsF0wvykySg==
   dependencies:
     "@react-native-async-storage/async-storage" "^1.15.14"
-    "@usecapsule/core-sdk" "1.19.0"
-    "@usecapsule/react-native-passkey" "2.2.0-dev.2"
-    "@usecapsule/user-management-client" "1.16.0"
-    "@usecapsule/viem-v1-integration" "1.19.0"
-    "@usecapsule/viem-v2-integration" "1.18.0"
-    "@usecapsule/web-sdk" "1.21.0"
-    base64url "^3.0.1"
-    node-forge "1.3.1"
-    node-libs-react-native "^1.2.1"
-    react-dom "^18.2.0"
-    react-native-crypto "^2.2.0"
-    react-native-get-random-values "^1.11.0"
-    react-native-keychain "8.0.0"
-    react-native-modpow "^1.1.1-0"
-    text-encoding "^0.7.0"
-
-"@usecapsule/react-native-wallet@^1.6.0-dev.1":
-  version "1.6.0-dev.1"
-  resolved "https://registry.yarnpkg.com/@usecapsule/react-native-wallet/-/react-native-wallet-1.6.0-dev.1.tgz#713a8b5f5fab0e0be5a6be7ee416d757b4999e83"
-  integrity sha512-OPLI7XfpvaQBTJTxVjEbVDTssfrYBS7YHgUJbDgHFpExlbdz4tu44/Q4+ufTS5/pezyayz/QnFZ5fVtG2CAVQQ==
-  dependencies:
-    "@react-native-async-storage/async-storage" "^1.15.14"
-    "@usecapsule/core-sdk" "1.19.0"
-    "@usecapsule/react-native-passkey" "2.2.0-dev.2"
+    "@usecapsule/core-sdk" "1.21.0"
+    "@usecapsule/react-native-passkey" "2.2.0-dev.4"
     "@usecapsule/user-management-client" "1.16.0"
     "@usecapsule/viem-v1-integration" "1.19.0"
     "@usecapsule/viem-v2-integration" "1.18.0"
