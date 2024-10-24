@@ -1,4 +1,4 @@
-package com.capsulernexample
+package com.usecapsule.template.expo
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

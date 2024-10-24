@@ -15,6 +15,11 @@
         android:launchMode="singleTask"
         android:windowSoftInputMode="adjustResize"
         android:exported="true">
+                    <provider
+        android:name="com.facebook.react.modules.blob.BlobProvider"
+        android:authorities="@string/blob_provider_authority"
+        android:exported="false"
+      />
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />

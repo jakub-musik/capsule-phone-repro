@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.usecapsule.expoexample",
+      "bundleIdentifier": "com.usecapsule.template.expo",
       "associatedDomains": ["webcredentials:app.beta.usecapsule.com", "webcredentials:app.usecapsule.com"],
       "teamId": "FF9U73RS48"
     },
@@ -23,7 +23,29 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.usecapsule.expoexample"
+      "package": "com.usecapsule.template.expo",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "app.beta.usecapsule.com",
+              "pathPrefix": "/.well-known/assetlinks.json"
+            },
+            {
+              "scheme": "https",
+              "host": "app.usecapsule.com",
+              "pathPrefix": "/.well-known/assetlinks.json"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "bundler": "metro",

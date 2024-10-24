@@ -1,4 +1,4 @@
-package com.capsulernexample
+package com.usecapsule.template.expo
 
 import android.app.Application
 import com.facebook.react.PackageList

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Capsule RN</string>
+      <string name="blob_provider_authority">com.usecapsule.template.expo.blobs</string>
 </resources>

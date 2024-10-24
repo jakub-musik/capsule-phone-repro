@@ -1,4 +1,3 @@
-import { CAPSULE_API } from "@env";
 import { CapsuleMobile, Environment } from "@usecapsule/react-native-wallet";
 import { webcrypto } from "crypto";
 import React, { useEffect, useState } from "react";
@@ -16,7 +15,7 @@ interface PhonePasskeysAuthProps {
 }
 
 // Step 1: Set up your Capsule API key
-const CAPSULE_API_KEY = CAPSULE_API;
+const CAPSULE_API_KEY = ;
 
 // Step 2: Set the Capsule environment
 const CAPSULE_ENVIRONMENT = Environment.DEVELOPMENT;
